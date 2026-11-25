@@ -23,11 +23,14 @@ MAX_WORDS = 20
 
 def check_gate(text):
     """Mirror the house gate: 1-160 chars, one line, non-whitespace UTF-8,
-    at most 20 words of plain text."""
+    at most 20 words of plain text, no surrounding white space (a stray
+    space would silently change the entry the judge reads)."""
     if not isinstance(text, str):
         return "not text"
     if not text.strip():
         return "only white space"
+    if text != text.strip():
+        return "leading or trailing white space"
     if len(text) < 1 or len(text) > MAX_CHARS:
         return "length %d outside 1-%d chars" % (len(text), MAX_CHARS)
     if "\n" in text or "\r" in text:
